@@ -7,7 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
-#[ORM\Table(name: '`order`')]
+#[ORM\Table(name: '`orders`')]
 class Order
 {
     #[ORM\Id]
@@ -16,10 +16,16 @@ class Order
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    private ?string $identifier = null;
+
+    #[ORM\Column(length: 255)]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     private ?string $deliveryAddress = null;
+
+    #[ORM\Column]
+    private array $orderItems = [];
 
     #[ORM\Column(length: 255)]
     private ?string $deliveryOption = null;
@@ -36,15 +42,21 @@ class Order
     #[ORM\Column]
     private ?\DateTime $updatedAt = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
-    private array $orderItems = [];
-
-    #[ORM\Column(length: 255)]
-    private ?string $identifier = null;
-
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getIdentifier(): ?string
+    {
+        return $this->identifier;
+    }
+
+    public function setIdentifier(string $identifier): static
+    {
+        $this->identifier = $identifier;
+
+        return $this;
     }
 
     public function getName(): ?string
@@ -67,6 +79,18 @@ class Order
     public function setDeliveryAddress(string $deliveryAddress): static
     {
         $this->deliveryAddress = $deliveryAddress;
+
+        return $this;
+    }
+
+    public function getOrderItems(): array
+    {
+        return $this->orderItems;
+    }
+
+    public function setOrderItems(array $orderItems): static
+    {
+        $this->orderItems = $orderItems;
 
         return $this;
     }
@@ -127,30 +151,6 @@ class Order
     public function setUpdatedAt(\DateTime $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    public function getOrderItems(): array
-    {
-        return $this->orderItems;
-    }
-
-    public function setOrderItems(array $orderItems): static
-    {
-        $this->orderItems = $orderItems;
-
-        return $this;
-    }
-
-    public function getIdentifier(): ?string
-    {
-        return $this->identifier;
-    }
-
-    public function setIdentifier(string $identifier): static
-    {
-        $this->identifier = $identifier;
 
         return $this;
     }
