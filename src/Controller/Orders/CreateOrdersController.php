@@ -29,7 +29,7 @@ class CreateOrdersController extends AbstractController
         summary: "Create a new order",
         description: "Endpoint to create a new order with the specified details.",
         requestBody: new OA\RequestBody(
-            description: "Order details",
+            description: "Create Order Request Payload",
             content: new OA\JsonContent(
                 type: "object",
                 properties: [
@@ -53,7 +53,7 @@ class CreateOrdersController extends AbstractController
         responses: [
             new OA\Response(
                 response: 201,
-                description: "Order created successfully",
+                description: "Created",
                 content: new OA\JsonContent(
                     type: "object",
                     properties: [
@@ -85,7 +85,7 @@ class CreateOrdersController extends AbstractController
                                     format: "date-time",
                                     example: "2024-08-19 00:56:45"
                                 ),
-                                new OA\Property(property: "order_status", type: "string", example: "pending"),
+                                new OA\Property(property: "order_status", type: "string", example: "processing"),
                                 new OA\Property(property: "created_at", type: "string", format: "date-time", example: "2024-08-18 00:56:45"),
                                 new OA\Property(property: "updated_at", type: "string", format: "date-time", example: "2024-08-18 00:56:45")
                             ]
@@ -95,13 +95,13 @@ class CreateOrdersController extends AbstractController
             ),
             new OA\Response(
                 response: 500,
-                description: "Error creating the order",
+                description: "Internal Server Error",
                 content: new OA\JsonContent(
                     type: "object",
                     properties: [
                         new OA\Property(property: "status", type: "string", example: "error"),
                         new OA\Property(property: "status_code", type: "integer", example: 500),
-                        new OA\Property(property: "message", type: "string", example: "Internal Server Error")
+                        new OA\Property(property: "message", type: "string", example: "Something went wrong")
                     ]
                 )
             )

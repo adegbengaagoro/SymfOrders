@@ -43,7 +43,7 @@ class FetchOrdersController extends AbstractController
         responses: [
             new OA\Response(
                 response: 200,
-                description: "Orders retrieved successfully",
+                description: "Success",
                 content: new OA\JsonContent(
                     type: "object",
                     properties: [
@@ -77,7 +77,7 @@ class FetchOrdersController extends AbstractController
                                         format: "date-time",
                                         example: "2024-08-30 12:00:00"
                                     ),
-                                    new OA\Property(property: "order_status", type: "string", example: "pending"),
+                                    new OA\Property(property: "order_status", type: "string", example: "delivered"),
                                     new OA\Property(property: "created_at", type: "string", format: "date-time", example: "2024-08-18 00:56:45"),
                                     new OA\Property(property: "updated_at", type: "string", format: "date-time", example: "2024-08-18 00:56:45")
                                 ]
@@ -88,7 +88,7 @@ class FetchOrdersController extends AbstractController
             ),
             new OA\Response(
                 response: 400,
-                description: "Invalid query parameters provided",
+                description: "Bad Request",
                 content: new OA\JsonContent(
                     type: "object",
                     properties: [
@@ -106,7 +106,7 @@ class FetchOrdersController extends AbstractController
                     properties: [
                         new OA\Property(property: "status", type: "string", example: "error"),
                         new OA\Property(property: "status_code", type: "integer", example: 500),
-                        new OA\Property(property: "message", type: "string", example: "Internal Server Error")
+                        new OA\Property(property: "message", type: "string", example: "Something went wrong")
                     ]
                 )
             )
