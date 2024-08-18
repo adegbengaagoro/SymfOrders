@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Orders;
 
 use App\Entity\Order;
 use App\Helpers\DateGenerator;
@@ -13,8 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use OpenApi\Attributes as OA;
 
-#[Route('/api')]
-class OrdersController extends AbstractController
+
+class CreateOrdersController extends AbstractController
 {
     private $entityManager;
 
@@ -23,7 +23,7 @@ class OrdersController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/orders', name: 'create_new_order', methods: ['POST'])]
+    #[Route('/api/orders', name: 'create_new_order', methods: ['POST'])]
     #[OA\Post(
         path: "/api/orders",
         summary: "Create a new order",
@@ -107,11 +107,9 @@ class OrdersController extends AbstractController
             )
         ]
     )]
-    public function createNewOrder(Request $request): JsonResponse
+    public function handle(Request $request): JsonResponse
     {
         try {
-            $orderRepository = $this->entityManager->getRepository(Order::class);
-
             $requestPayload = json_decode($request->getContent(), true);
 
             $customerName = $requestPayload['name'];
