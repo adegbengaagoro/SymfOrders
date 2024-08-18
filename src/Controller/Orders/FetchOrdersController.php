@@ -134,7 +134,7 @@ class FetchOrdersController extends AbstractController
                 }, $orderRecords);
 
                 return $this->json([
-                    'status' => 'error',
+                    'status' => 'success',
                     'status_code' => 200,
                     'message' => 'All Orders listed successfully',
                     'results' => $filteredOrderRecords,
