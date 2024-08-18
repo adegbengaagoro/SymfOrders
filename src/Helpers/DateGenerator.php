@@ -28,6 +28,11 @@ class DateGenerator
    */
   public static function generateRandomDayCount(): int
   {
-    return mt_rand(1, 365);
+    return mt_rand(1, 7);
+  }
+
+  public static function currentDateTime(): \DateTime
+  {
+    return new \DateTime();
   }
 }
