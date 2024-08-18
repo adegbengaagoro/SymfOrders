@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-class RandomOrderDetailsGenerator
+class OrdersDataHelpers
 {
   /**
    * Retrieves a random order status from a predefined list.
@@ -34,4 +34,20 @@ class RandomOrderDetailsGenerator
     $randomIndex = array_rand($deliveryOptions);
     return $deliveryOptions[$randomIndex];
   }
+
+  // public static function findOrdersByDateAndStatus(array $orders, $targetDate)
+  // {
+  //   $matchingOrders = [];
+
+  //   foreach ($orders as $order) {
+  //     if ($order->order_status === 'processing') {
+  //       $estimatedDeliveryDate = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $order->estimatedDeliveryDateAndTime);
+  //       if ($estimatedDeliveryDate && $estimatedDeliveryDate->format('Y-m-d') === $targetDate) {
+  //         $matchingOrders[] = $order;
+  //       }
+  //     }
+  //   }
+
+  //   return $matchingOrders;
+  // }
 }

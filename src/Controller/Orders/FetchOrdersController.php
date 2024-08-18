@@ -71,12 +71,7 @@ class FetchOrdersController extends AbstractController
                                         )
                                     ),
                                     new OA\Property(property: "delivery_option", type: "string", example: "standard"),
-                                    new OA\Property(
-                                        property: "estimated_delivery_date_and_time",
-                                        type: "string",
-                                        format: "date-time",
-                                        example: "2024-08-30 12:00:00"
-                                    ),
+                                    new OA\Property(property: "estimated_delivery_date", type: "string", example: "2024-08-30"),
                                     new OA\Property(property: "order_status", type: "string", example: "delivered"),
                                     new OA\Property(property: "created_at", type: "string", format: "date-time", example: "2024-08-18 00:56:45"),
                                     new OA\Property(property: "updated_at", type: "string", format: "date-time", example: "2024-08-18 00:56:45")
@@ -131,7 +126,7 @@ class FetchOrdersController extends AbstractController
                         'delivery_address' => $order->getDeliveryAddress(),
                         'order_items' => $order->getOrderItems(),
                         'delivery_option' => $order->getDeliveryOption(),
-                        'estimated_delivery_date_and_time' => $order->getEstimatedDeliveryDateAndTime(),
+                        'estimated_delivery_date' => $order->getEstimatedDeliveryDate(),
                         'order_status' => $order->getOrderStatus(),
                         'created_at' => $order->getCreatedAt(),
                         'updated_at' => $order->getUpdatedAt(),
@@ -168,7 +163,7 @@ class FetchOrdersController extends AbstractController
                         'delivery_address' => $identifierQueryData->getDeliveryAddress(),
                         'order_items' => $identifierQueryData->getOrderItems(),
                         'delivery_option' => $identifierQueryData->getDeliveryOption(),
-                        'estimated_delivery_date_and_time' => $identifierQueryData->getEstimatedDeliveryDateAndTime()->format('Y-m-d H:i:s'),
+                        'estimated_delivery_date' => $identifierQueryData->getEstimatedDeliveryDate(),
                         'order_status' => $identifierQueryData->getOrderStatus(),
                         'created_at' => $identifierQueryData->getCreatedAt()->format('Y-m-d H:i:s'),
                         'updated_at' => $identifierQueryData->getUpdatedAt()->format('Y-m-d H:i:s')
@@ -193,7 +188,7 @@ class FetchOrdersController extends AbstractController
                     'delivery_address' => $order->getDeliveryAddress(),
                     'order_items' => $order->getOrderItems(),
                     'delivery_option' => $order->getDeliveryOption(),
-                    'estimated_delivery_date_and_time' => $order->getEstimatedDeliveryDateAndTime(),
+                    'estimated_delivery_date' => $order->getEstimatedDeliveryDate(),
                     'order_status' => $order->getOrderStatus(),
                     'created_at' => $order->getCreatedAt(),
                     'updated_at' => $order->getUpdatedAt(),
