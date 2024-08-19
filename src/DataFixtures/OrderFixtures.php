@@ -11,26 +11,6 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 
 class OrderFixtures extends Fixture
 {
-    // public function load(ObjectManager $manager): void
-    // {
-    //     // $orderItems = [];
-    //     // $orderTimestamps = DateHelpers::currentDateTime();
-
-    //     // $firstOrder = new Order();
-    //     // $firstOrder->setIdentifier(RandomStringGenerator::generateSecureRandomString(32));
-    //     // $firstOrder->setName('Angela Jax');
-    //     // $firstOrder->setDeliveryAddress('53 Elm Street');
-    //     // $firstOrder->setOrderItems($orderItems);
-    //     // $firstOrder->setDeliveryOption(OrdersDataHelpers::getRandomDeliveryOption());
-    //     // $firstOrder->setEstimatedDeliveryDate(DateHelpers::generateDateInFuture(DateHelpers::generateRandomDayCount(), 'Y-m-d'));
-    //     // $firstOrder->setOrderStatus('processing');
-    //     // $firstOrder->setCreatedAt($orderTimestamps);
-    //     // $firstOrder->setUpdatedAt($orderTimestamps);
-    //     // $manager->persist($firstOrder);
-
-    //     $manager->flush();
-    // }
-
     public function load(ObjectManager $manager): void
     {
         // Create 10 orders

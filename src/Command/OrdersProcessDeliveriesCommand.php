@@ -58,8 +58,6 @@ class OrdersProcessDeliveriesCommand extends Command
 
             $ordersFound = $this->orderRepository->findOrdersByDateAndStatus($dateToCheck, $orderStatus);
 
-            $numberOfRecordsFound = count($ordersFound);
-
             $io->success($this->orderRepository->updateOrderStatusToDelayed($ordersFound));
         }
 
