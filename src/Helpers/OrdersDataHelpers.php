@@ -30,7 +30,7 @@ class OrdersDataHelpers
    */
   public static function getRandomDeliveryOption(): string
   {
-    $deliveryOptions = ['Standard Delivery', 'Express Delivery', 'Same Day Delivery', 'Amazon Prime'];
+    $deliveryOptions = ['Standard Delivery', 'Express Delivery', 'Amazon Prime', 'Royal Mail'];
     $randomIndex = array_rand($deliveryOptions);
     return $deliveryOptions[$randomIndex];
   }

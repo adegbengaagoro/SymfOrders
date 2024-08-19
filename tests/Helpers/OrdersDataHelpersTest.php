@@ -60,4 +60,56 @@ class OrdersDataHelpersTest extends TestCase
 
         $this->assertGreaterThanOrEqual(count($validStatuses), count($uniqueStatuses), "Not all statuses were returned in the sample.");
     }
+
+    /**
+     * Test if getRandomDeliveryOption returns a valid delivery option from the predefined list.
+     */
+    public function testGetRandomDeliveryOptionReturnsValidOption()
+    {
+        $validOptions = ['Standard Delivery', 'Express Delivery', 'Amazon Prime', 'Royal Mail'];
+
+        // Run the method multiple times to ensure that all options can be returned
+        for ($i = 0; $i < 100; $i++) {
+            $option = OrdersDataHelpers::getRandomDeliveryOption();
+            $this->assertContains($option, $validOptions, "Returned option '$option' is not in the valid delivery options list.");
+        }
+    }
+
+    /**
+     * Test if getRandomDeliveryOption always returns a string.
+     */
+    public function testGetRandomDeliveryOptionReturnsString()
+    {
+        $option = OrdersDataHelpers::getRandomDeliveryOption();
+        $this->assertIsString($option, "Returned option is not a string.");
+    }
+
+    /**
+     * Test if getRandomDeliveryOption returns one of the predefined delivery options.
+     */
+    public function testGetRandomDeliveryOptionHasValidValue()
+    {
+        $validOptions = ['Standard Delivery', 'Express Delivery', 'Amazon Prime', 'Royal Mail'];
+
+        $option = OrdersDataHelpers::getRandomDeliveryOption();
+        $this->assertTrue(in_array($option, $validOptions), "Returned option '$option' is not a valid delivery option.");
+    }
+
+    /**
+     * Test the randomness of getRandomDeliveryOption over multiple calls.
+     */
+    public function testGetRandomDeliveryOptionRandomness()
+    {
+        $samples = [];
+        $numSamples = 100;
+
+        for ($i = 0; $i < $numSamples; $i++) {
+            $samples[] = OrdersDataHelpers::getRandomDeliveryOption();
+        }
+
+        $uniqueOptions = array_unique($samples);
+        $validOptions = ['Standard Delivery', 'Express Delivery', 'Amazon Prime', 'Royal Mail'];
+
+        $this->assertGreaterThanOrEqual(count($validOptions), count($uniqueOptions), "Not all delivery options were returned in the sample.");
+    }
 }
