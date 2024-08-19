@@ -12,15 +12,19 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use OpenApi\Attributes as OA;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
 class CreateOrdersController extends AbstractController
 {
     private $entityManager;
+    private $logger;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, LoggerInterface $logger)
     {
         $this->entityManager = $entityManager;
+        $this->logger = $logger;
     }
 
     #[Route('/api/orders', name: 'create_new_order', methods: ['POST'])]
@@ -89,6 +93,18 @@ class CreateOrdersController extends AbstractController
                 )
             ),
             new OA\Response(
+                response: 400,
+                description: "Bad Request",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "status", type: "string", example: "error"),
+                        new OA\Property(property: "status_code", type: "integer", example: 400),
+                        new OA\Property(property: "message", type: "string", example: "Invalid request payload"),
+                    ]
+                )
+            ),
+            new OA\Response(
                 response: 500,
                 description: "Internal Server Error",
                 content: new OA\JsonContent(
@@ -102,10 +118,26 @@ class CreateOrdersController extends AbstractController
             )
         ]
     )]
-    public function handle(Request $request): JsonResponse
+    public function handle(Request $request, ValidatorInterface $validator): JsonResponse
     {
         try {
             $requestPayload = json_decode($request->getContent(), true);
+
+            $expectedFields = ['name', 'delivery_address', 'order_items', 'delivery_option'];
+            $unexpectedFields = array_diff(array_keys($requestPayload), $expectedFields);
+
+            if (!empty($unexpectedFields)) {
+                $this->logger->warning('Unexpected fields in request payload', [
+                    'unexpected_fields' => $unexpectedFields,
+                    'payload' => $requestPayload
+                ]);
+
+                return $this->json([
+                    'status' => 'error',
+                    'status_code' => 400,
+                    'message' => 'Invalid request payload',
+                ], 400);
+            }
 
             $customerName = $requestPayload['name'];
             $deliveryAddress = $requestPayload['delivery_address'];
