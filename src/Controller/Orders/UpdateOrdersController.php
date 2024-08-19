@@ -3,9 +3,6 @@
 namespace App\Controller\Orders;
 
 use App\Entity\Order;
-use App\Helpers\DateGenerator;
-use App\Helpers\RandomOrderDetailsGenerator;
-use App\Helpers\RandomStringGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -67,12 +64,7 @@ class UpdateOrdersController extends AbstractController
                                     )
                                 ),
                                 new OA\Property(property: "delivery_option", type: "string", example: "standard"),
-                                new OA\Property(
-                                    property: "estimated_delivery_date_and_time",
-                                    type: "string",
-                                    format: "date-time",
-                                    example: "2024-08-19 00:56:45"
-                                ),
+                                new OA\Property(property: "estimated_delivery_date", type: "string", example: "2024-08-19"),
                                 new OA\Property(
                                     property: "order_status",
                                     type: "object",
@@ -150,7 +142,7 @@ class UpdateOrdersController extends AbstractController
                     'delivery_address' => $orderData->getDeliveryAddress(),
                     'order_items' => $orderData->getOrderItems(),
                     'delivery_option' => $orderData->getDeliveryOption(),
-                    'estimated_delivery_date_and_time' => $orderData->getEstimatedDeliveryDateAndTime()->format('Y-m-d H:i:s'),
+                    'estimated_delivery_date' => $orderData->getEstimatedDeliveryDate(),
                     'order_status' => [
                         'previous_order_status' => $previousOrderStatus,
                         'new_order_status' => $orderData->getOrderStatus()

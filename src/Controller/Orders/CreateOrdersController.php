@@ -3,8 +3,8 @@
 namespace App\Controller\Orders;
 
 use App\Entity\Order;
-use App\Helpers\DateGenerator;
-use App\Helpers\RandomOrderDetailsGenerator;
+use App\Helpers\DateHelpers;
+use App\Helpers\OrdersDataHelpers;
 use App\Helpers\RandomStringGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -79,12 +79,7 @@ class CreateOrdersController extends AbstractController
                                     )
                                 ),
                                 new OA\Property(property: "delivery_option", type: "string", example: "standard"),
-                                new OA\Property(
-                                    property: "estimated_delivery_date_and_time",
-                                    type: "string",
-                                    format: "date-time",
-                                    example: "2024-08-19 00:56:45"
-                                ),
+                                new OA\Property(property: "estimated_delivery_date", type: "string", example: "2024-08-19"),
                                 new OA\Property(property: "order_status", type: "string", example: "processing"),
                                 new OA\Property(property: "created_at", type: "string", format: "date-time", example: "2024-08-18 00:56:45"),
                                 new OA\Property(property: "updated_at", type: "string", format: "date-time", example: "2024-08-18 00:56:45")
@@ -116,9 +111,9 @@ class CreateOrdersController extends AbstractController
             $deliveryAddress = $requestPayload['delivery_address'];
             $orderItems = $requestPayload['order_items'];
             $deliveryOption = $requestPayload['delivery_option'];
-            $estimatedDeliveryDateAndTime = DateGenerator::generateDateInFuture(DateGenerator::generateRandomDayCount());
-            $orderStatus = RandomOrderDetailsGenerator::getRandomOrderStatus();
-            $timestamps = DateGenerator::currentDateTime();
+            $estimatedDeliveryDateAndTime = DateHelpers::generateDateInFuture(DateHelpers::generateRandomDayCount(), 'Y-m-d');
+            $orderStatus = OrdersDataHelpers::getRandomOrderStatus();
+            $timestamps = DateHelpers::currentDateTime();
 
             $order = new Order();
             $order->setIdentifier(RandomStringGenerator::generateSecureRandomString(32));
@@ -126,7 +121,7 @@ class CreateOrdersController extends AbstractController
             $order->setDeliveryAddress($deliveryAddress);
             $order->setOrderItems($orderItems);
             $order->setDeliveryOption($deliveryOption);
-            $order->setEstimatedDeliveryDateAndTime($estimatedDeliveryDateAndTime);
+            $order->setEstimatedDeliveryDate($estimatedDeliveryDateAndTime);
             $order->setOrderStatus($orderStatus);
             $order->setCreatedAt($timestamps);
             $order->setUpdatedAt($timestamps);
@@ -144,7 +139,7 @@ class CreateOrdersController extends AbstractController
                     'delivery_address' => $order->getDeliveryAddress(),
                     'order_items' => $order->getOrderItems(),
                     'delivery_option' => $order->getDeliveryOption(),
-                    'estimated_delivery_date_and_time' => $order->getEstimatedDeliveryDateAndTime()->format('Y-m-d H:i:s'),
+                    'estimated_delivery_date' => $order->getEstimatedDeliveryDate(),
                     'order_status' => $order->getOrderStatus(),
                     'created_at' => $order->getCreatedAt()->format('Y-m-d H:i:s'),
                     'updated_at' => $order->getUpdatedAt()->format('Y-m-d H:i:s')

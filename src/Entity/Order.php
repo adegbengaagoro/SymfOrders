@@ -31,7 +31,7 @@ class Order
     private ?string $deliveryOption = null;
 
     #[ORM\Column]
-    private ?\DateTime $estimatedDeliveryDateAndTime = null;
+    private ?string $estimatedDeliveryDate = null;
 
     #[ORM\Column(length: 255)]
     private ?string $orderStatus = null;
@@ -107,14 +107,14 @@ class Order
         return $this;
     }
 
-    public function getEstimatedDeliveryDateAndTime(): ?\DateTime
+    public function getEstimatedDeliveryDate(): ?string
     {
-        return $this->estimatedDeliveryDateAndTime;
+        return $this->estimatedDeliveryDate;
     }
 
-    public function setEstimatedDeliveryDateAndTime(\DateTime $estimatedDeliveryDateAndTime): static
+    public function setEstimatedDeliveryDate(string $estimatedDeliveryDate): static
     {
-        $this->estimatedDeliveryDateAndTime = $estimatedDeliveryDateAndTime;
+        $this->estimatedDeliveryDate = $estimatedDeliveryDate;
 
         return $this;
     }
