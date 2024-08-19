@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Entity\Order;
 use App\Helpers\DateHelpers;
 use App\Repository\OrderRepository;
 use Symfony\Component\Console\Attribute\AsCommand;

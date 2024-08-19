@@ -8,10 +8,15 @@ class DateHelpers
    * Generates a future date by adding a specified number of days to the current date.
    *
    * @param int $numberOfDaysInFuture The number of days to add to the current date
+   * @param string $dateFormat The format of the returned date
    * @return string The computed date in the future
+   * @throws \InvalidArgumentException if the number of days is zero or negative
    */
   public static function generateDateInFuture(int $numberOfDaysInFuture, string $dateFormat): string
   {
+    if ($numberOfDaysInFuture <= 0) {
+      throw new \InvalidArgumentException('Number of days in the future must be greater than 0.');
+    }
     $currentDate = new \DateTime();
     $currentDate->modify("+ $numberOfDaysInFuture days");
 

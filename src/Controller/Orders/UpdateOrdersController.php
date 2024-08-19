@@ -4,6 +4,7 @@ namespace App\Controller\Orders;
 
 use App\Entity\Order;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,10 +15,12 @@ use OpenApi\Attributes as OA;
 class UpdateOrdersController extends AbstractController
 {
     private $entityManager;
+    private $logger;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, LoggerInterface $logger)
     {
         $this->entityManager = $entityManager;
+        $this->logger = $logger;
     }
 
     #[Route('/api/orders', name: 'update_order_status', methods: ['PATCH'])]
@@ -110,6 +113,22 @@ class UpdateOrdersController extends AbstractController
         try {
             $requestPayload = json_decode($request->getContent(), true);
 
+            $expectedFields = ['order_identifier', 'new_order_status'];
+            $unexpectedFields = array_diff(array_keys($requestPayload), $expectedFields);
+
+            if (!empty($unexpectedFields)) {
+                $this->logger->warning('Unexpected fields in request payload', [
+                    'unexpected_fields' => $unexpectedFields,
+                    'payload' => $requestPayload
+                ]);
+
+                return $this->json([
+                    'status' => 'error',
+                    'status_code' => 400,
+                    'message' => 'Invalid request payload',
+                ], 400);
+            }
+
             $orderIdentifier = $requestPayload['order_identifier'];
             $newOrderStatus = $requestPayload['new_order_status'];
             $repositoryHandler = $this->entityManager->getRepository(Order::class);
@@ -150,11 +169,11 @@ class UpdateOrdersController extends AbstractController
                     'updated_at' => $orderData->getUpdatedAt()->format('Y-m-d H:i:s')
                 ]
             ], 201);
-        } catch (\Exception $createNewOrderError) {
+        } catch (\Exception $updateOrderError) {
             return $this->json([
                 'status' => 'error',
                 'status_code' => 500,
-                'message' => $createNewOrderError->getMessage()
+                'message' => $updateOrderError->getMessage()
             ], 500);
         }
     }
